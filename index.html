@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Mini Max</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700;900&family=Playfair+Display:wght@700;900&family=Bebas+Neue&family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#1b1f3a;--mut:#6b7190;--line:#dcdfec;--pan:#fff;--acc:#5b4bff;--acc2:#eeebff;--back:#e6e9f4}
+*{box-sizing:border-box}html,body{height:100%;margin:0}
+body{font:13px Poppins,system-ui,sans-serif;color:var(--ink);background:var(--back);display:grid;grid-template-rows:56px 1fr;overflow:hidden}
+button,input,select,textarea{font:inherit;color:inherit}
+header{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:0 14px;background:var(--pan);border-bottom:1px solid var(--line)}
+.logo{font-weight:900;font-size:19px;letter-spacing:-.04em}.logo i{font-style:normal;color:var(--acc)}
+.bar{display:flex;gap:6px;align-items:center}
+.b{background:var(--pan);border:1px solid var(--line);border-radius:9px;padding:7px 11px;cursor:pointer}
+.b:hover{border-color:var(--acc);background:var(--acc2)}.b:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px solid var(--acc);outline-offset:1px}
+.b.p{background:var(--acc);border-color:var(--acc);color:#fff;font-weight:700}.b.p:hover{background:#4738e6}
+main{display:grid;grid-template-columns:190px 1fr 300px;min-height:0}
+aside{background:var(--pan);overflow:auto;padding:14px}
+#L{border-right:1px solid var(--line)}#R{border-left:1px solid var(--line);padding:0}
+h4{margin:16px 0 8px;font-size:12px;color:var(--mut);font-weight:700}h4:first-child{margin-top:0}
+.g{display:grid;grid-template-columns:1fr 1fr;gap:6px}.g .b{text-align:center}
+.sz{display:flex;justify-content:space-between;width:100%;margin-bottom:6px;text-align:left}.sz small{color:var(--mut)}
+#st{display:flex;align-items:center;justify-content:center;overflow:auto;min-width:0;padding:24px}
+#cv{background:#fff;box-shadow:0 10px 40px rgba(27,31,58,.18);flex:none;touch-action:none}
+.tabs{display:grid;grid-template-columns:1fr 1fr;border-bottom:1px solid var(--line)}
+.tabs button{border:0;background:none;padding:12px;cursor:pointer;font-weight:700;color:var(--mut);border-bottom:2px solid transparent}
+.tabs .on{color:var(--acc);border-color:var(--acc)}
+.pane{padding:14px}.f{margin-bottom:9px}.f label{display:block;font-size:11px;color:var(--mut);margin-bottom:3px}
+.f input,.f select,.f textarea,.ai input{width:100%;border:1px solid var(--line);border-radius:8px;padding:7px 8px;background:#fff}
+.f input[type=color]{height:34px;padding:2px}.f input[type=range]{padding:0}
+.r2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.ly{display:flex;align-items:center;gap:6px;padding:6px 8px;border:1px solid var(--line);border-radius:8px;margin-bottom:5px;cursor:pointer}
+.ly.on{border-color:var(--acc);background:var(--acc2)}.ly span{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ly button{border:0;background:none;cursor:pointer;color:var(--mut)}
+#msg{margin-top:10px;font-size:12px;line-height:1.5;color:var(--mut);white-space:pre-wrap;word-break:break-word}
+.chip{display:block;width:100%;text-align:left;margin-top:6px;padding:8px;border:1px solid var(--line);border-radius:8px;background:#fff;cursor:pointer}
+.chip:hover{border-color:var(--acc);background:var(--acc2)}
+dialog{border:1px solid var(--line);border-radius:14px;padding:20px;width:min(520px,94vw);color:var(--ink)}
+dialog::backdrop{background:rgba(27,31,58,.45)}dialog h3{margin:0 0 4px}dialog p{color:var(--mut);margin:0 0 12px;line-height:1.5}
+.pv{border-top:1px solid var(--line);padding:10px 0}.pv b{display:block;margin-bottom:6px}.pv .r2{gap:6px}.pv input{width:100%;border:1px solid var(--line);border-radius:8px;padding:7px 8px}
+@media(max-width:900px){main{grid-template-columns:1fr 280px}#L{display:none}}
+@media(max-width:640px){body{overflow:auto}main{grid-template-columns:1fr}#st{min-height:60vh}}
+@media(prefers-reduced-motion:no-preference){.b{transition:background .15s,border-color .15s}}
+
+/* MiniMax Studio — Midnight Liquid Glass */
+:root{--ink:#f4f5ff;--mut:#a1a6c1;--line:rgba(255,255,255,.115);--pan:rgba(22,23,38,.64);--acc:#aa98ff;--acc2:rgba(150,120,255,.16);--back:#05050b}
+body{font-family:Inter,Poppins,system-ui,sans-serif;background:radial-gradient(ellipse 55% 45% at 15% 5%,rgba(93,64,180,.20),transparent 75%),radial-gradient(ellipse 45% 60% at 92% 92%,rgba(32,97,157,.17),transparent 80%),#05050b;color:var(--ink);grid-template-rows:72px 1fr}
+body:before{content:'';position:fixed;inset:0;pointer-events:none;z-index:-1;background:radial-gradient(circle at 30% 60%,rgba(135,94,255,.10),transparent 38%);animation:aurora 16s ease-in-out infinite alternate}
+@keyframes aurora{to{transform:translate(22%, -14%) scale(1.2);filter:hue-rotate(35deg)}}
+header{background:rgba(13,13,23,.65);backdrop-filter:blur(30px) saturate(160%);border-bottom:1px solid var(--line);padding:0 22px;box-shadow:0 10px 60px #0004;z-index:3}
+.logo{font-size:23px;letter-spacing:-.075em}.logo i{background:linear-gradient(125deg,#c5b8ff,#8ad8ff);background-clip:text;-webkit-background-clip:text;color:transparent}
+main{grid-template-columns:220px minmax(0,1fr) 340px;gap:10px;padding:10px;min-height:0}
+aside{background:var(--pan);backdrop-filter:blur(32px) saturate(160%);border:1px solid var(--line)!important;border-radius:22px;padding:18px;box-shadow:inset 0 1px rgba(255,255,255,.08),0 15px 45px #0003}
+#R{padding:0}#st{border-radius:22px;background:radial-gradient(circle at center,rgba(255,255,255,.045),transparent 70%);background-image:linear-gradient(45deg,rgba(255,255,255,.016) 25%,transparent 25%),linear-gradient(-45deg,rgba(255,255,255,.016) 25%,transparent 25%);background-size:24px 24px}
+#cv{border-radius:3px;box-shadow:0 30px 90px #0009,0 0 0 1px #ffffff1a}
+h4{font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:#a8a9c6;margin:24px 0 12px}
+.b,.chip{color:#e9e8f6;background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.11);border-radius:12px;transition:background .22s,transform .22s,border-color .22s,box-shadow .22s;box-shadow:inset 0 1px rgba(255,255,255,.04)}
+.b:hover,.chip:hover{transform:translateY(-2px);background:rgba(177,155,255,.13);border-color:rgba(193,178,255,.5);box-shadow:0 8px 24px #0003}
+.b.p{background:linear-gradient(125deg,#9b85f8,#7055db);border:1px solid #c5b6ff70;color:white;box-shadow:0 5px 25px #7955df42}.b.p:hover{background:linear-gradient(125deg,#b3a2ff,#8065ee)}
+.tabs{border-color:var(--line);padding:8px 8px 0;gap:6px}.tabs button{border-radius:12px 12px 0 0}.tabs .on{color:#d0c4ff;border-color:#a38aff;background:#a38aff16}
+.pane{padding:18px}.f label{color:#aeb0c9}.f input,.f select,.f textarea,.ai input,.pv input{background:rgba(5,6,16,.64);border:1px solid var(--line);color:#f5f3ff;border-radius:11px;padding:10px;outline:none}
+.f textarea{resize:vertical;line-height:1.6}.f input:focus,.f textarea:focus,.pv input:focus{border-color:#b19aff;box-shadow:0 0 0 3px #a58aff20}
+.ly{background:#ffffff08;border-color:var(--line);border-radius:11px;padding:10px}.ly.on{background:#ab91ff23;border-color:#a98aff}.ly button{color:#bcb5d4}
+#msg{background:#a58aff0c;border:1px solid var(--line);border-radius:12px;padding:12px;line-height:1.65}
+dialog{background:linear-gradient(140deg,#222135,#0d0e19);border:1px solid #ffffff2a;border-radius:24px;color:#fff;box-shadow:0 40px 130px #000b;max-height:85vh;overflow:auto}dialog::backdrop{background:#020208bb;backdrop-filter:blur(12px)}.pv{border-color:var(--line)}
+#providerBar{display:flex;align-items:center;gap:8px;padding:8px 0 14px}#providerBar select{flex:1;min-width:0;background:#141324;color:#eee;border:1px solid #ffffff24;border-radius:10px;padding:9px}#providerBar label{font-size:11px;color:var(--mut)}
+#L::-webkit-scrollbar,#R::-webkit-scrollbar{width:5px}#L::-webkit-scrollbar-thumb,#R::-webkit-scrollbar-thumb{background:#ffffff33;border-radius:8px}
+@media(max-width:1050px){main{grid-template-columns:175px minmax(0,1fr) 285px}.bar{flex-wrap:wrap;justify-content:end}.b{padding:7px}}
+@media(max-width:780px){body{overflow:auto;min-height:100dvh;display:block}header{position:sticky;top:0;min-height:72px;flex-wrap:wrap;padding:10px}main{display:flex;flex-direction:column}#L{display:block;order:2}#st{order:1;min-height:58vh}#R{order:3;min-height:350px}.bar{gap:4px}}
+@media(prefers-reduced-motion:reduce){body:before{animation:none}.b,.chip{transition:none}}
+</style></head><body>
+<header>
+ <div class="logo">mini<i>max</i></div>
+ <div class="bar">
+  <button class="b" id="un" title="Ctrl+Z">Deshacer</button><button class="b" id="re" title="Ctrl+Y">Rehacer</button>
+  <button class="b" id="sv">Guardar</button><button class="b" id="ld">Abrir</button>
+  <button class="b" id="cf">Conectar IA</button>
+  <select class="b" id="fm"><option>PNG</option><option>JPG</option></select>
+  <button class="b p" id="ex">Descargar</button>
+ </div>
+</header>
+<main>
+<aside id="L">
+ <h4>Agregar</h4>
+ <div class="g"><button class="b" id="aT">Texto</button><button class="b" id="aI">Imagen</button><button class="b" id="aR">Rectángulo</button><button class="b" id="aC">Círculo</button></div>
+ <h4>Plantillas</h4><div class="g"><button class="b" data-t="oferta">Oferta</button><button class="b" data-t="evento">Evento</button><button class="b" data-t="elegante">Elegante</button><button class="b" data-t="anuncio">Anuncio</button></div><h4>Formato</h4>
+ <button class="b sz" data-s="1080,1920">Historia <small>1080×1920</small></button>
+ <button class="b sz" data-s="1080,1350">Post vertical <small>1080×1350</small></button>
+ <button class="b sz" data-s="1080,1080">Post cuadrado <small>1080×1080</small></button>
+ <button class="b sz" data-s="1200,630">Facebook <small>1200×630</small></button>
+ <button class="b sz" data-s="1920,1080">Video / banner <small>1920×1080</small></button>
+ <button class="b sz" data-s="2480,3508">Flyer A4 <small>2480×3508</small></button>
+ <h4>Fondo</h4><div class="f"><input type="color" id="bg" value="#ffffff"></div><div class="f"><label>Segundo color (degradé)</label><input type="color" id="bg2" value="#ffffff"></div><button class="b sz" id="bgx">Quitar degradé</button>
+ <h4>Zoom</h4><div class="f"><input type="range" id="zm" min="10" max="100" value="40"></div>
+ <input type="file" id="fi" accept="image/*" hidden><input type="file" id="fj" accept=".json" hidden>
+</aside>
+<div id="st"><canvas id="cv" width="1080" height="1350" aria-label="Lienzo de diseño"></canvas></div>
+<aside id="R">
+ <div class="tabs"><button id="t1" class="on">Diseño</button><button id="t2">Crear con IA</button></div>
+ <div class="pane" id="p1">
+  <p id="em" style="color:var(--mut);margin:0 0 12px">Elegí un elemento del lienzo para editarlo.</p>
+  <div id="fs"></div>
+  <div id="ab"><div class="r2" style="margin-bottom:8px"><button class="b" id="c1">Centrar ↔</button><button class="b" id="c2">Centrar ↕</button></div><div class="r2"><button class="b" id="du">Duplicar</button><button class="b" id="de">Eliminar</button></div></div>
+  <h4>Capas</h4><div id="ls"></div>
+ </div>
+ <div class="pane ai" id="p2" hidden><div class="f"><label>Servidor privado (Cloudflare Worker)</label><input id="backendUrl" type="url" placeholder="https://minimax-api.tu-cuenta.workers.dev" autocomplete="off"><small style="color:var(--mut)">Las claves de IA se guardan en el servidor, nunca en GitHub.</small></div><div class="f"><label>Contraseña de acceso</label><input id="accessPass" type="password" placeholder="Contraseña de tu servidor" autocomplete="off"></div><button class="b" id="connectTest" type="button">Probar conexión</button><div id="providerBar"><label for="providerPick">MODELO</label><select id="providerPick"><option value="auto">Automático · respaldo inteligente</option></select></div>
+  <div class="f"><label>Qué querés crear o cambiar</label><textarea id="pr" rows="4" placeholder="Ej.: flyer de liquidación de zapatillas, 40% off, para historia de Instagram"></textarea></div>
+  <div class="f"><label>Estilo</label><select id="sy"><option>moderno y limpio</option><option>minimalista</option><option>elegante</option><option>llamativo de oferta</option><option>oscuro y premium</option><option>retro</option></select></div>
+  <div class="r2"><button class="b p" id="gD">Diseñar</button><button class="b" id="gT">Ideas de texto</button><button class="b" id="gI">Imagen IA</button><button class="b" id="gB">Fondo IA</button></div>
+  <div id="msg">Conectá tu servidor privado para generar diseños e imágenes con IA. El editor funciona sin conexión.</div>
+ </div>
+</aside>
+</main>
+<dialog id="dg"><h3>Conectar servidores de IA</h3>
+<p>Las claves de API se configuran como secretos en Cloudflare Workers, nunca acá. Abrí «Crear con IA» para conectar el servidor y seleccionar OpenAI, Gemini, Groq u OpenRouter.</p>
+<div id="pvs"></div><div style="text-align:right;margin-top:10px"><button class="b p" id="ok">Guardar</button></div></dialog>
+<script>
+const $=i=>document.getElementById(i),cv=$('cv'),cx=cv.getContext('2d');
+const S={w:1080,h:1350,bg:'#ffffff',bg2:'',o:[],sel:null,z:.4,H:[],R:[]};
+const uid=()=>Math.random().toString(36).slice(2,9),cur=()=>S.o.find(o=>o.id===S.sel);
+const FONTS=['Poppins','Montserrat','Playfair Display','Bebas Neue','Georgia','Arial','Impact'];
+const snap=()=>JSON.stringify({w:S.w,h:S.h,bg:S.bg,bg2:S.bg2,o:S.o});
+let gate=0;
+function push(soft){if(soft&&gate)return;if(soft)gate=setTimeout(()=>gate=0,700);S.H.push(snap());if(S.H.length>80)S.H.shift();S.R=[]}
+function load(s){const d=JSON.parse(s);Object.assign(S,{w:d.w,h:d.h,bg:d.bg,bg2:d.bg2||'',o:d.o,sel:null});$('bg').value=S.bg;$('bg2').value=S.bg2||'#ffffff';fit()}
+const undo=()=>{if(S.H.length){S.R.push(snap());load(S.H.pop())}},redo=()=>{if(S.R.length){S.H.push(snap());load(S.R.pop())}};
+function toast(t){$('msg').textContent=t}
+function fit(){const st=$('st');S.z=Math.max(.1,Math.min((st.clientWidth-48)/S.w,(st.clientHeight-48)/S.h,1));$('zm').value=Math.round(S.z*100);draw()}
+function size(){cv.width=S.w;cv.height=S.h;cv.style.width=S.w*S.z+'px';cv.style.height=S.h*S.z+'px'}
+const imgs={};
+function img(o){if(!imgs[o.id]||imgs[o.id].s!==o.src){const i=new Image();i.onload=()=>draw();i.src=o.src;imgs[o.id]={i,s:o.src}}return imgs[o.id].i}
+function wrap(t,x,cy,mw,fs){const ws=String(t).split(' '),ls=[];let l='';for(const w of ws){const k=l?l+' '+w:w;if(cx.measureText(k).width>mw&&l){ls.push(l);l=w}else l=k}ls.push(l);const lh=fs*1.15,s=cy-(ls.length-1)*lh/2;ls.forEach((a,i)=>cx.fillText(a,x,s+i*lh))}
+function draw(sel=true){
+ size();let g=S.bg;if(S.bg2){g=cx.createLinearGradient(0,0,0,S.h);g.addColorStop(0,S.bg);g.addColorStop(1,S.bg2)}cx.fillStyle=g;cx.fillRect(0,0,S.w,S.h);
+ for(const o of S.o){cx.save();cx.globalAlpha=o.opacity??1;if(o.shadow==='si'){cx.shadowColor='rgba(0,0,0,.35)';cx.shadowBlur=30;cx.shadowOffsetY=10}
+  if(o.type==='rect'){cx.fillStyle=o.fill;if(o.radius&&cx.roundRect){cx.beginPath();cx.roundRect(o.x,o.y,o.w,o.h,o.radius);cx.fill()}else cx.fillRect(o.x,o.y,o.w,o.h)}
+  else if(o.type==='circle'){cx.fillStyle=o.fill;cx.beginPath();cx.ellipse(o.x+o.w/2,o.y+o.h/2,o.w/2,o.h/2,0,0,7);cx.fill()}
+  else if(o.type==='image'){const i=img(o);if(i.complete&&i.naturalWidth)cx.drawImage(i,o.x,o.y,o.w,o.h)}
+  else{cx.fillStyle=o.color;cx.font=`${o.weight} ${o.fontSize}px "${o.font}"`;cx.textAlign=o.align;cx.textBaseline='middle';
+   wrap(o.text,o.align==='center'?o.x+o.w/2:o.align==='right'?o.x+o.w:o.x,o.y+o.h/2,o.w,o.fontSize)}
+  cx.restore()}
+ const o=cur();
+ if(sel&&o){const k=1/S.z;cx.strokeStyle='#5b4bff';cx.lineWidth=2*k;cx.strokeRect(o.x,o.y,o.w,o.h);cx.fillStyle='#fff';
+  for(const[px,py]of corners(o)){cx.beginPath();cx.rect(px-6*k,py-6*k,12*k,12*k);cx.fill();cx.stroke()}}
+ panel();save()}
+const corners=o=>[[o.x,o.y],[o.x+o.w,o.y],[o.x,o.y+o.h],[o.x+o.w,o.y+o.h]];
+function add(o,keep){push();o.id=uid();o.opacity=1;S.o.push(o);S.sel=o.id;draw()}
+const aT=()=>add({type:'text',name:'Texto',x:S.w/2-300,y:S.h/3,w:600,h:160,text:'Escribí acá',fontSize:96,font:'Poppins',weight:'900',color:'#1b1f3a',align:'center'});
+$('aT').onclick=aT;
+$('aR').onclick=()=>add({type:'rect',name:'Rectángulo',x:S.w/2-250,y:S.h/2-120,w:500,h:240,fill:'#5b4bff'});
+$('aC').onclick=()=>add({type:'circle',name:'Círculo',x:S.w/2-150,y:S.h/2-150,w:300,h:300,fill:'#ffb703'});
+function addImg(src,cover){const i=new Image();i.onload=()=>{let w=i.naturalWidth,h=i.naturalHeight,x=0,y=0;
+ if(cover){w=S.w;h=S.h}else{const k=Math.min(S.w*.7/w,S.h*.5/h,1);w*=k;h*=k;x=(S.w-w)/2;y=(S.h-h)/2}
+ add({type:'image',name:cover?'Fondo IA':'Imagen',src,x,y,w,h});if(cover){S.o.unshift(S.o.pop());draw()}};i.src=src}
+$('aI').onclick=()=>$('fi').click();
+$('fi').onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>addImg(r.result);r.readAsDataURL(f);e.target.value=''};
+document.querySelectorAll('[data-s]').forEach(b=>b.onclick=()=>{push();[S.w,S.h]=b.dataset.s.split(',').map(Number);fit()});
+$('bg').oninput=e=>{push(1);S.bg=e.target.value;draw()};
+$('zm').oninput=e=>{S.z=e.target.value/100;draw()};
+$('un').onclick=undo;$('re').onclick=redo;
+// Inspector
+const FL=[['name','Nombre','text','*'],['x','X','number','*'],['y','Y','number','*'],['w','Ancho','number','*'],['h','Alto','number','*'],['opacity','Opacidad','range','*'],
+['text','Texto','text','text'],['fontSize','Tamaño','number','text'],['color','Color del texto','color','text'],['font','Fuente','select','text',FONTS],['weight','Grosor','select','text',['400','700','900']],['align','Alineación','select','text',['left','center','right']],['fill','Color','color','rect circle'],['radius','Esquinas redondeadas','number','rect'],['shadow','Sombra','select','*',['no','si']]];
+const fe={};
+FL.forEach(([k,l,t,v,opt])=>{const d=document.createElement('div');d.className='f';d.dataset.v=v;d.innerHTML=`<label>${l}</label>`;
+ const e=t==='select'?document.createElement('select'):document.createElement('input');
+ if(t==='select')opt.forEach(x=>e.add(new Option(x,x)));else e.type=t;
+ e.oninput=()=>{const o=cur();if(!o)return;push(1);let x=e.value;if(t==='number')x=+x||0;if(k==='opacity')x/=100;o[k]=x;draw()};
+ fe[k]=e;d.append(e);$('fs').append(d)});
+function panel(){const o=cur();$('em').hidden=!!o;$('fs').hidden=!o;$('ab').hidden=!o;
+ if(o){for(const[k,e]of Object.entries(fe)){const v=o[k]??(k==='shadow'?'no':'');if(document.activeElement!==e)e.value=k==='opacity'?Math.round((o.opacity??1)*100):typeof v==='number'?Math.round(v):v}
+  [...$('fs').children].forEach(d=>d.hidden=!(d.dataset.v==='*'||d.dataset.v.split(' ').includes(o.type)))}
+ const L=$('ls');L.innerHTML='';[...S.o].reverse().forEach(a=>{const r=document.createElement('div');r.className='ly'+(a.id===S.sel?' on':'');
+  const s=document.createElement('span');s.textContent=a.name||a.type;r.append(s);
+  [['↑',1],['↓',-1]].forEach(([t,d])=>{const b=document.createElement('button');b.textContent=t;b.onclick=e=>{e.stopPropagation();const i=S.o.indexOf(a),j=i+d;if(j<0||j>=S.o.length)return;push();[S.o[i],S.o[j]]=[S.o[j],S.o[i]];draw()};r.append(b)});
+  r.onclick=()=>{S.sel=a.id;draw()};L.append(r)})}
+$('de').onclick=del;function del(){if(!S.sel)return;push();S.o=S.o.filter(o=>o.id!==S.sel);S.sel=null;draw()}
+$('du').onclick=()=>{const o=cur();if(!o)return;push();const n={...o,id:uid(),x:o.x+24,y:o.y+24,name:o.name+' copia'};S.o.push(n);S.sel=n.id;draw()};
+// Mouse
+let dr=null;const pt=e=>{const r=cv.getBoundingClientRect();return{x:(e.clientX-r.left)*S.w/r.width,y:(e.clientY-r.top)*S.h/r.height}};
+cv.onpointerdown=e=>{const p=pt(e),o=cur();let c=-1;
+ if(o){const k=14/S.z;corners(o).forEach(([x,y],i)=>{if(Math.abs(p.x-x)<k&&Math.abs(p.y-y)<k)c=i})}
+ if(c>=0){dr={m:'r',c,p,b:{...o},moved:0}}
+ else{const h=[...S.o].reverse().find(a=>p.x>=a.x&&p.y>=a.y&&p.x<=a.x+a.w&&p.y<=a.y+a.h);S.sel=h?h.id:null;if(h)dr={m:'m',p,b:{...h},moved:0}}
+ if(dr)cv.setPointerCapture(e.pointerId);draw()};
+cv.onpointermove=e=>{if(!dr)return;const p=pt(e),o=cur(),dx=p.x-dr.p.x,dy=p.y-dr.p.y,b=dr.b;if(!dr.moved){push();dr.moved=1}
+ if(dr.m==='m'){o.x=b.x+dx;o.y=b.y+dy}
+ else{const c=dr.c;let x=b.x,y=b.y,w=b.w,h=b.h;if(c%2)w=b.w+dx;else{x=b.x+dx;w=b.w-dx}if(c>1)h=b.h+dy;else{y=b.y+dy;h=b.h-dy}
+  if(w<10){if(!(c%2))x=b.x+b.w-10;w=10}if(h<10){if(c<2)y=b.y+b.h-10;h=10}Object.assign(o,{x,y,w,h})}
+ draw()};
+cv.onpointerup=()=>dr=null;
+document.onkeydown=e=>{const t=e.target.tagName,m=e.ctrlKey||e.metaKey,k=e.key.toLowerCase();
+ if(m&&k==='z'){e.preventDefault();undo();return}if(m&&k==='y'){e.preventDefault();redo();return}if(m&&k==='d'){e.preventDefault();$('du').click();return}
+ if(['INPUT','SELECT','TEXTAREA'].includes(t))return;const o=cur();if(!o)return;
+ if(k==='delete'||k==='backspace'){e.preventDefault();del();return}
+ const s=e.shiftKey?10:1,d={arrowup:[0,-s],arrowdown:[0,s],arrowleft:[-s,0],arrowright:[s,0]}[k];
+ if(d){e.preventDefault();push(1);o.x+=d[0];o.y+=d[1];draw()}};
+// Archivos
+const dl=(n,u)=>{const a=document.createElement('a');a.href=u;a.download=n;a.click()};
+$('ex').onclick=()=>{draw(false);const j=$('fm').value==='JPG';dl('mini-max.'+(j?'jpg':'png'),cv.toDataURL(j?'image/jpeg':'image/png',.95));draw()};
+$('sv').onclick=()=>{const u=URL.createObjectURL(new Blob([JSON.stringify({app:'MiniMax',...JSON.parse(snap())})],{type:'application/json'}));dl('proyecto.minimax.json',u);setTimeout(()=>URL.revokeObjectURL(u),2000)};
+$('ld').onclick=()=>$('fj').click();
+$('fj').onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{push();load(r.result)}catch{toast('Ese archivo no es un proyecto de Mini Max.')}};r.readAsText(f);e.target.value=''};
+$('t1').onclick=()=>tab(1);$('t2').onclick=()=>tab(2);
+function tab(n){$('p1').hidden=n!==1;$('p2').hidden=n!==2;$('t1').className=n===1?'on':'';$('t2').className=n===2?'on':''}
+// IA a través de backend privado. Nunca se almacenan claves de proveedores en el navegador.
+const PV=[{id:'auto',n:'Automático · respaldo inteligente'}, {id:'openai',n:'OpenAI'}, {id:'gemini',n:'Google Gemini'}, {id:'groq',n:'Groq'}, {id:'openrouter',n:'OpenRouter'}];
+let backend=localStorage.getItem('mm_backend')||'';
+$('backendUrl').value=backend;
+let accessPass=''; // solo en memoria durante esta pestaña
+function updateProviders(){const el=$('providerPick'),v=el.value;el.innerHTML='';PV.forEach(p=>el.add(new Option(p.n,p.id)));el.value=PV.some(p=>p.id===v)?v:'auto'}
+function base(){const u=$('backendUrl').value.trim().replace(/\/+$/,'');if(!/^https:\/\/[^\s]+$/i.test(u))throw Error('Ingresá la URL HTTPS de tu Cloudflare Worker.');return u}
+async function api(path,payload){
+ const url=base();backend=url;localStorage.setItem('mm_backend',url);
+ accessPass=$('accessPass').value||accessPass;
+ if(!accessPass)throw Error('Ingresá la contraseña de acceso de tu servidor.');
+ const r=await fetch(url+path,{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+accessPass},body:JSON.stringify(payload)});
+ let d;try{d=await r.json()}catch{throw Error('El servidor devolvió una respuesta inválida ('+r.status+').')}
+ if(!r.ok)throw Error(d.error||'Error del servidor '+r.status);
+ return d;
+}
+$('connectTest').onclick=async()=>{try{const d=await api('/health',{});toast('Servidor conectado. Proveedores: '+d.providers.join(', '));}catch(e){toast(e.message)}};
+$('cf').onclick=()=>{tab(2);$('backendUrl').focus()};
+async function ask(s,u){toast('Consultando servidor privado…');const d=await api('/chat',{provider:$('providerPick').value,system:s,prompt:u});return {t:d.text,from:d.provider}}
+const J=t=>{const a=t.indexOf('{'),b=t.lastIndexOf('}');if(a<0||b<0)throw Error('La IA no devolvió un formato válido. Probá de nuevo.');return JSON.parse(t.slice(a,b+1))};
+const num=(v,d,lo,hi)=>{v=Number(v);return Number.isFinite(v)?Math.min(hi,Math.max(lo,v)):d},hex=(v,d)=>/^#[0-9a-f]{3,8}$/i.test(v)?v:d;
+function clean(c){if(!c||!Array.isArray(c.objects))throw Error('La IA devolvió un diseño inválido.');
+ return{bg:hex(c.bg,'#ffffff'),o:c.objects.slice(0,30).filter(o=>['text','rect','circle'].includes(o.type)).map(o=>({id:uid(),type:o.type,name:String(o.name||o.type).slice(0,40),
+  x:num(o.x,0,-S.w,S.w*2),y:num(o.y,0,-S.h,S.h*2),w:num(o.w,200,10,S.w*2),h:num(o.h,100,10,S.h*2),opacity:num(o.opacity,1,0,1),
+  text:String(o.text||'').slice(0,300),fontSize:num(o.fontSize,60,8,600),font:FONTS.includes(o.font)?o.font:'Poppins',weight:['400','700','900'].includes(String(o.weight))?String(o.weight):'700',
+  color:hex(o.color,'#1b1f3a'),align:['left','center','right'].includes(o.align)?o.align:'center',fill:hex(o.fill,'#5b4bff')}))}}
+const SYS=`Sos el motor de diseño de Mini Max, una app de diseño gráfico para cualquier persona y rubro. Respondé SOLO con JSON válido, sin markdown.
+Objetos permitidos: text, rect, circle. Respetá el ancho y alto del lienzo (los objetos deben quedar dentro). Jerarquía clara: título grande, texto de apoyo, precio u oferta muy visible si existe, llamada a la acción. Buen contraste, márgenes generosos, pocos elementos (máximo 12). Si ya hay un diseño y el pedido es un cambio, modificá ese diseño; si no, creá uno nuevo. Ordená los objetos del fondo hacia el frente. Escribí los textos en el idioma del pedido.
+Formato: {"bg":"#hex","objects":[{"type":"text|rect|circle","name":"","x":0,"y":0,"w":0,"h":0,"text":"","fontSize":0,"font":"Poppins|Montserrat|Playfair Display|Bebas Neue|Georgia|Arial|Impact","weight":"400|700|900","color":"#hex","align":"left|center|right","fill":"#hex","opacity":1}]}`;
+const busy=(b,f)=>async()=>{if(b.disabled)return;b.disabled=true;try{await f()}catch(e){toast(e.message)}b.disabled=false};
+$('gD').onclick=busy($('gD'),async()=>{const cur0=S.o.map(({src,...r})=>r);
+ const{t,from}=await ask(SYS,`Estilo: ${$('sy').value}\nLienzo: ${S.w}x${S.h}\nPedido: ${$('pr').value||'una pieza gráfica atractiva'}\nDiseño actual: ${JSON.stringify(cur0)}`);
+ const c=clean(J(t));push();S.bg=c.bg;$('bg').value=c.bg;S.o=[...S.o.filter(o=>o.type==='image'),...c.o];S.sel=null;draw();toast('Listo, diseñado con '+from+'. Podés editar cada elemento.')});
+$('gT').onclick=busy($('gT'),async()=>{const{t}=await ask('Respondé SOLO con JSON: {"items":["texto","texto","texto","texto","texto"]}. Son títulos o frases cortas (máx. 8 palabras) para una pieza gráfica, en el idioma del pedido.',`Estilo: ${$('sy').value}\nPedido: ${$('pr').value||'pieza gráfica'}`);
+ const it=(J(t).items||[]).slice(0,6);$('msg').textContent='Tocá una idea para agregarla al lienzo:';
+ it.forEach(x=>{const b=document.createElement('button');b.className='chip';b.textContent=String(x);b.onclick=()=>{aT();cur().text=String(x);draw()};$('msg').append(b)})});
+async function pic(cover){
+ const q=$('pr').value.trim()||'fondo abstracto moderno con luz suave';
+ toast('Generando imagen con OpenAI…');
+ const d=await api('/image',{prompt:q+', '+$('sy').value,ratio:S.w/S.h,quality:'medium'});
+ if(!d.image)throw Error('El servidor no devolvió una imagen.');
+ addImg('data:image/png;base64,'+d.image,cover);toast('Imagen generada y agregada al lienzo.');
+}
+$('gI').onclick=busy($('gI'),()=>pic(false));$('gB').onclick=busy($('gB'),()=>pic(true));
+// Inicio
+updateProviders();
+S.o=[{id:uid(),type:'rect',name:'Franja',x:80,y:120,w:160,h:14,fill:'#5b4bff',opacity:1},
+ {id:uid(),type:'text',name:'Título',x:80,y:170,w:920,h:300,text:'Tu primera idea empieza acá',fontSize:118,font:'Poppins',weight:'900',color:'#1b1f3a',align:'left',opacity:1},
+ {id:uid(),type:'text',name:'Detalle',x:80,y:500,w:800,h:120,text:'Tocá “Crear con IA” y pedí el diseño que imaginás.',fontSize:44,font:'Poppins',weight:'400',color:'#6b7190',align:'left',opacity:1}];
+S.sel=S.o[1].id;try{const a=localStorage.getItem('mm_auto');if(a){const d=JSON.parse(a);if(d.o&&d.o.length){Object.assign(S,{w:d.w,h:d.h,bg:d.bg,bg2:d.bg2||'',o:d.o,sel:null});$('bg').value=S.bg;$('bg2').value=S.bg2||'#ffffff'}}}catch{}addEventListener('resize',fit);
+document.fonts.ready.then(()=>{FONTS.slice(0,4).forEach(f=>document.fonts.load('700 40px "'+f+'"'));fit()});fit();
+
+// Autoguardado, alineación, degradé y plantillas
+let sv_;function save(){clearTimeout(sv_);sv_=setTimeout(()=>{try{localStorage.setItem('mm_auto',snap())}catch{}},600)}
+$('c1').onclick=()=>{const o=cur();if(!o)return;push();o.x=(S.w-o.w)/2;draw()};
+$('c2').onclick=()=>{const o=cur();if(!o)return;push();o.y=(S.h-o.h)/2;draw()};
+$('bg2').oninput=e=>{push(1);S.bg2=e.target.value;draw()};
+$('bgx').onclick=()=>{push();S.bg2='';draw()};
+const tx=(name,x,y,w,h,text,fontSize,font,weight,color,align='center')=>({type:'text',name,x,y,w,h,text,fontSize,font,weight,color,align,opacity:1});
+const sp=(name,type,x,y,w,h,fill,radius=0)=>({type,name,x,y,w,h,fill,radius,opacity:1});
+const TP={
+oferta:()=>{const{w,h}=S;return{bg:'#ffe14d',bg2:'',o:[sp('Círculo','circle',w*.1,h*.06,w*.8,w*.8,'#1b1f3a'),tx('Porcentaje',w*.1,h*.06+w*.12,w*.8,w*.36,'40%',w*.32,'Bebas Neue','400','#ffe14d'),tx('Descuento',w*.1,h*.06+w*.5,w*.8,w*.12,'DE DESCUENTO',w*.08,'Montserrat','900','#ffffff'),tx('Título',w*.08,h*.06+w*.86,w*.84,h*.1,'Solo esta semana',w*.085,'Poppins','900','#1b1f3a'),sp('Botón','rect',w*.25,h*.87,w*.5,h*.07,'#5b4bff',h*.035),tx('Botón texto',w*.25,h*.87,w*.5,h*.07,'Comprá ahora',w*.045,'Poppins','700','#ffffff')]}},
+evento:()=>{const{w,h}=S;return{bg:'#5b4bff',bg2:'#1b1f3a',o:[tx('Fecha',w*.08,h*.1,w*.84,h*.06,'SÁBADO 12 · 20 HS',w*.05,'Montserrat','700','#ffe14d','left'),tx('Título',w*.08,h*.18,w*.84,h*.42,'Noche de música en vivo',w*.13,'Bebas Neue','400','#ffffff','left'),sp('Línea','rect',w*.08,h*.63,w*.2,h*.008,'#ffe14d'),tx('Lugar',w*.08,h*.66,w*.84,h*.1,'Plaza Central, entrada libre y gratuita',w*.05,'Poppins','400','#e6e9f4','left'),sp('Botón','rect',w*.08,h*.82,w*.46,h*.07,'#ffe14d',h*.035),tx('Botón texto',w*.08,h*.82,w*.46,h*.07,'Reservá tu lugar',w*.04,'Poppins','700','#1b1f3a')]}},
+elegante:()=>{const{w,h}=S;return{bg:'#f3f0ea',bg2:'',o:[sp('Marco','rect',w*.06,h*.05,w*.88,h*.9,'#1b1f3a',0),sp('Interior','rect',w*.065,h*.055,w*.87,h*.89,'#f3f0ea',0),tx('Sobre título',w*.1,h*.2,w*.8,h*.05,'COLECCIÓN 2026',w*.035,'Montserrat','700','#6b7190'),tx('Título',w*.1,h*.28,w*.8,h*.3,'Elegancia sin esfuerzo',w*.11,'Playfair Display','900','#1b1f3a'),sp('Línea','rect',w*.44,h*.63,w*.12,h*.004,'#1b1f3a'),tx('Detalle',w*.15,h*.67,w*.7,h*.1,'Diseños pensados para durar y para disfrutar cada día.',w*.038,'Poppins','400','#6b7190')]}},
+anuncio:()=>{const{w,h}=S;return{bg:'#0f172a',bg2:'#1e3a8a',o:[sp('Franja','rect',w*.08,h*.14,w*.14,h*.01,'#38bdf8'),tx('Título',w*.08,h*.18,w*.84,h*.36,'Lanzamos algo nuevo',w*.12,'Poppins','900','#ffffff','left'),tx('Detalle',w*.08,h*.56,w*.8,h*.16,'Descubrilo desde hoy en nuestra web y en todas las sucursales.',w*.045,'Poppins','400','#cbd5e1','left'),sp('Botón','rect',w*.08,h*.8,w*.4,h*.07,'#38bdf8',h*.035),tx('Botón texto',w*.08,h*.8,w*.4,h*.07,'Ver más',w*.042,'Poppins','700','#0f172a')]}}};
+document.querySelectorAll('[data-t]').forEach(b=>b.onclick=()=>{const t=TP[b.dataset.t]();push();S.bg=t.bg;S.bg2=t.bg2;$('bg').value=t.bg;$('bg2').value=t.bg2||'#ffffff';S.o=t.o.map(o=>({...o,id:uid()}));S.sel=null;draw()});
+</script></body></html>
